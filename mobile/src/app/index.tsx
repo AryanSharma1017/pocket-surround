@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   return (
@@ -17,11 +18,13 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.actions}>
-        <Pressable style={styles.primaryButton}>
+        <Pressable style={styles.primaryButton}
+                   onPress={() => router.push('/create-room')}>
           <Text style={styles.primaryButtonText}>Create Room</Text>
         </Pressable>
 
-        <Pressable style={styles.secondaryButton}>
+        <Pressable style={styles.secondaryButton}
+                   onPress={() => router.push('/join-room')}>
           <Text style={styles.secondaryButtonText}>Join Room</Text>
         </Pressable>
       </View>
