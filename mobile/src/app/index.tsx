@@ -1,98 +1,120 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <View style={styles.container}>
+      <StatusBar style="light" />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.hero}>
+        <Text style={styles.icon}>🔊</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <Text style={styles.title}>Pocket Surround</Text>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <Text style={styles.subtitle}>
+          Turn multiple phones into one synchronized speaker system.
+        </Text>
+      </View>
+
+      <View style={styles.actions}>
+        <Pressable style={styles.primaryButton}>
+          <Text style={styles.primaryButtonText}>Create Room</Text>
+        </Pressable>
+
+        <Pressable style={styles.secondaryButton}>
+          <Text style={styles.secondaryButtonText}>Join Room</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.status}>
+        <View style={styles.statusDot} />
+        <Text style={styles.statusText}>Ready</Text>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#111111',
+    paddingHorizontal: 24,
+    justifyContent: 'space-between',
+    paddingTop: 100,
+    paddingBottom: 60,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+
+  hero: {
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+
+  icon: {
+    fontSize: 72,
+    marginBottom: 24,
   },
+
   title: {
+    color: '#FFFFFF',
+    fontSize: 34,
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+
+  subtitle: {
+    color: '#A1A1AA',
+    fontSize: 17,
     textAlign: 'center',
+    lineHeight: 25,
+    maxWidth: 320,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  actions: {
+    gap: 16,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  primaryButton: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 18,
+    borderRadius: 14,
+    alignItems: 'center',
+  },
+
+  primaryButtonText: {
+    color: '#111111',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+
+  secondaryButton: {
+    borderWidth: 1,
+    borderColor: '#3F3F46',
+    paddingVertical: 18,
+    borderRadius: 14,
+    alignItems: 'center',
+  },
+
+  secondaryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+
+  status: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#22C55E',
+  },
+
+  statusText: {
+    color: '#71717A',
+    fontSize: 14,
   },
 });
