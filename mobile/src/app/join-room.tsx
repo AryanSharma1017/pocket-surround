@@ -1,33 +1,78 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
+import { useState } from 'react';
 
 export default function JoinRoomScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create Room</Text>
 
-      <Text style={styles.subtitle}>
-        Your listening room will be created here.
-      </Text>
-    </View>
-  );
+    const [roomCode, setRoomCode] = useState('');
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Join Room</Text>
+
+            <Text style={styles.subtitle}>
+                Enter room code.
+            </Text>
+
+            <TextInput
+                style={styles.input}
+                placeholder="     "
+                value={roomCode}
+                onChangeText={setRoomCode}
+            />
+
+            <Pressable
+                style={styles.button}>
+                <Text style={styles.buttonText}>Join Room</Text>
+            </Pressable>
+
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#111111',
+        padding: 24,
+    },
 
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    marginBottom: 12,
-  },
+    title: {
+        color: '#FFFFFF',
+        fontSize: 32,
+        fontWeight: '700',
+        marginTop: 40,
+        marginBottom: 12,
+    },
 
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
+    subtitle: {
+        color: '#A1A1AA',
+        fontSize: 16,
+        lineHeight: 24,
+        marginBottom: 32,
+    },
+
+    input: {
+
+        borderWidth: 1,
+        borderColor: '#3F3F46',
+        borderRadius: 14,
+        paddingHorizontal: 18,
+        paddingVertical: 16,
+        color: '#FFFFFF',
+        fontSize: 18,
+        marginBottom: 16,
+    },
+
+    button: {
+        backgroundColor: '#FFFFFF',
+        paddingVertical: 18,
+        borderRadius: 14,
+        alignItems: 'center',
+    },
+
+    buttonText: {
+        color: '#111111',
+        fontSize: 17,
+        fontWeight: '700',
+    },
 });
