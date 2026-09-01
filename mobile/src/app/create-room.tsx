@@ -1,6 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function CreateRoomScreen() {
+
+    function generateRoomCode() {
+        const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+        const randomIndex = Math.floor(Math.random() * characters.length);
+
+        const randomCharacter = characters[randomIndex];
+        return randomCharacter;
+    } 
+
+    console.log(generateRoomCode());
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create Room</Text>
@@ -29,5 +41,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
+    alignItems: 'center',
+    color: '#A1A1AA',
   },
 });

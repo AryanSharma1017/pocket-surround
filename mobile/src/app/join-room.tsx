@@ -1,9 +1,21 @@
-import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Alert, TextInput, Pressable } from 'react-native';
 import { useState } from 'react';
 
 export default function JoinRoomScreen() {
 
     const [roomCode, setRoomCode] = useState('');
+    const [error, setError] = useState('');
+
+    function handleJoinRoom() {
+        const cleanedCode = roomCode.trim().toUpperCase();
+
+        if (cleanedCode === '') {
+            setError('Please enter a room code.')
+            return;
+        }
+
+        console.log(cleanedCode);
+    }
 
     return (
         <View style={styles.container}>
@@ -17,11 +29,20 @@ export default function JoinRoomScreen() {
                 style={styles.input}
                 placeholder="     "
                 value={roomCode}
-                onChangeText={setRoomCode}
+                onChangeText={(text) => {
+                    setRoomCode(text);
+                    setError('');
+                }}
             />
 
+            {error !== '' && (
+                <Text style={styles.errorText}>
+                    {error}
+                </Text>
+            )}
+
             <Pressable
-                style={styles.button}>
+                style={styles.button} onPress={handleJoinRoom}>
                 <Text style={styles.buttonText}>Join Room</Text>
             </Pressable>
 
@@ -75,4 +96,14 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: '700',
     },
+
+
+    errorText: {
+
+        color: '#EF4444',
+        fontSize: 14,
+        marginBottom: 16,
+
+    }
+
 });
