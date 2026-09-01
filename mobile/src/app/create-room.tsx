@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 
 export default function CreateRoomScreen() {
 
     const [roomCode, setRoomCode] = useState('');
+    const [roomLink, setRoomLink] = useState('');
+
+    async function handleCopyLink() {
+        await Clipboard.setStringAsync(roomLink);
+    }
 
     function generateRoomCode() {
         const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -21,8 +27,10 @@ export default function CreateRoomScreen() {
 
     function handleCreateRoom() {
         const newCode = generateRoomCode();
+        const newLink = `pocketsurround://join/${newCode}`;
 
         setRoomCode(newCode);
+        setRoomLink(newLink)
 
     }
 
@@ -49,6 +57,17 @@ export default function CreateRoomScreen() {
                     <Text style={styles.roomCode}>
                         {roomCode}
                     </Text>
+
+                    <Text style={styles.roomLink}>
+                        {roomLink}
+                    </Text>
+
+                    <Pressable
+                        style={styles.copyButton}
+                        onPress={handleCopyLink}
+                    >
+                        <Text style={styles.copyButtonText}>Copy Link</Text>
+                    </Pressable>
 
                     <Text style={styles.shareText}>
                         Share this code with your friends so they can join your room.
@@ -105,6 +124,30 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 
+    roomLink: {
+        color: '#007bee',
+        fontSize: 15,
+        fontWeight: '700',
+        letterSpacing: 6,
+        marginBottom: 20,
+    },
+
+    copyButton: {
+        borderWidth: 1,
+        borderColor: '#3F3F46',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 12,
+        marginBottom: 32,
+    },
+
+    copyButtonText: {
+        color: '#FFFFFF',
+        fontSize: 15,
+        fontWeight: '600',
+    },
+
+    
     shareText: {
         color: '#A1A1AA',
         fontSize: 15,
