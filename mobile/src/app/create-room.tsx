@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import QRCode from 'react-native-qrcode-svg';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 
@@ -37,21 +38,26 @@ export default function CreateRoomScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Create a Room</Text>
-
-            <Text style={styles.subtitle}>
-                Start a listening room and invite your friends to join.
-            </Text>
 
             {roomCode === '' ? (
-                <Pressable
-                    style={styles.button}
-                    onPress={handleCreateRoom}
-                >
-                    <Text style={styles.buttonText}>Create Room</Text>
-                </Pressable>
-            ) : (
                 <View style={styles.roomContainer}>
+                    <Text style={styles.title}>Create a Room</Text>
+
+                    <Text style={styles.subtitle}>
+                        Start a listening room and invite your friends to join.
+                    </Text>
+
+                    <Pressable
+                        style={styles.button}
+                        onPress={handleCreateRoom}
+                    >
+                        <Text style={styles.buttonText}>Create Room</Text>
+                    </Pressable>
+                </View>
+            ) : (
+
+                <View style={styles.roomContainer}>
+
                     <Text style={styles.roomLabel}>Your Room Code</Text>
 
                     <Text style={styles.roomCode}>
@@ -68,6 +74,13 @@ export default function CreateRoomScreen() {
                     >
                         <Text style={styles.copyButtonText}>Copy Link</Text>
                     </Pressable>
+
+                    <View style={styles.qrContainer}>
+                        <QRCode
+                            value={roomLink}
+                            size={200}
+                        />
+                    </View>
 
                     <Text style={styles.shareText}>
                         Share this code with your friends so they can join your room.
@@ -116,6 +129,13 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
 
+    qrContainer: {
+        backgroundColor: '#FFFFFF',
+        padding: 16,
+        borderRadius: 16,
+        marginBottom: 28,
+    },
+
     roomCode: {
         color: '#FFFFFF',
         fontSize: 36,
@@ -147,7 +167,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
 
-    
+
     shareText: {
         color: '#A1A1AA',
         fontSize: 15,
