@@ -1,14 +1,23 @@
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
+import { supabase } from '@/lib/supabse';
 
 export default function HomeScreen() {
+
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.log(error.message);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
 
       <View style={styles.hero}>
-        <Text style={styles.icon}>🔊</Text>
 
         <Text style={styles.title}>Pocket Surround</Text>
 
@@ -19,12 +28,12 @@ export default function HomeScreen() {
 
       <View style={styles.actions}>
         <Pressable style={styles.primaryButton}
-                   onPress={() => router.push('/create-room')}>
+          onPress={() => router.push('/create-room')}>
           <Text style={styles.primaryButtonText}>Create Room</Text>
         </Pressable>
 
         <Pressable style={styles.secondaryButton}
-                   onPress={() => router.push('/join-room')}>
+          onPress={() => router.push('/join-room')}>
           <Text style={styles.secondaryButtonText}>Join Room</Text>
         </Pressable>
       </View>
@@ -33,6 +42,12 @@ export default function HomeScreen() {
         <View style={styles.statusDot} />
         <Text style={styles.statusText}>Ready</Text>
       </View>
+
+      <Pressable style = {styles.primaryButton} onPress={handleLogout}>
+        <Text style={styles.primaryButtonText}> Log Out </Text>
+      </Pressable>
+
+
     </View>
   );
 }

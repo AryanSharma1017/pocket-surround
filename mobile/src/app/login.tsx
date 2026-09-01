@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { supabase } from '@/lib/supabse';
 
 export default function LoginScreen() {
 
@@ -8,6 +9,18 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
 
     const router = useRouter();
+
+    async function handleLogin() {
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email.trim(),
+            password,
+        });
+
+        if (error) {
+            console.log(error.message);
+            return;
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -36,7 +49,7 @@ export default function LoginScreen() {
                 onChangeText={setPassword}
             />
 
-            <Pressable style={styles.loginButton}>
+            <Pressable style={styles.loginButton} onPress={handleLogin}>
                 <Text style={styles.loginButtonText}>Log In</Text>
             </Pressable>
 

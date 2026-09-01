@@ -1,9 +1,22 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { supabase } from '@/lib/supabse';
 
 export default function SignupScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    async function handleSignup() {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+
+        if (error) {
+            console.log(error.message);
+            return;
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -32,7 +45,7 @@ export default function SignupScreen() {
                 onChangeText={setPassword}
             />
 
-            <Pressable style={styles.signupButton}>
+            <Pressable style={styles.signupButton}  onPress={handleSignup}>
                 <Text style={styles.signupButtonText}>
                     Create Account
                 </Text>
