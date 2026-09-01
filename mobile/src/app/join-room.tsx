@@ -1,10 +1,14 @@
 import { StyleSheet, View, Text, Alert, TextInput, Pressable } from 'react-native';
 import { useState } from 'react';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 export default function JoinRoomScreen() {
 
     const [roomCode, setRoomCode] = useState('');
     const [error, setError] = useState('');
+    const [permission, requestPermission] = useCameraPermissions();
+    const [isScanning, setIsScanning] = useState(false);
+
 
     function handleJoinRoom() {
         const cleanedCode = roomCode.trim().toUpperCase();
@@ -17,7 +21,35 @@ export default function JoinRoomScreen() {
         console.log(cleanedCode);
     }
 
-    return (
+    async function handleScanQRCode() {
+        if (!permission?.granted) {
+            const result = await requestPermission();
+
+            if (!result.granted) {
+                return;
+            }
+        }
+
+        setIsScanning(true);
+    }
+
+    function handleBarcodeScanned({ data }: { data: string }) {
+        console.log(data);
+    }
+
+    return isScanning ? (
+
+        <CameraView
+            style={styles.camera}
+            facing="back"
+            barcodeScannerSettings={{
+                barcodeTypes: ['qr'],
+            }
+            }
+            onBarcodeScanned={handleBarcodeScanned}
+        />
+
+    ) : (
         <View style={styles.container}>
             <Text style={styles.title}>Join Room</Text>
 
@@ -46,6 +78,15 @@ export default function JoinRoomScreen() {
                 <Text style={styles.buttonText}>Join Room</Text>
             </Pressable>
 
+            <Pressable
+                style={styles.scanButton}
+                onPress={handleScanQRCode}
+            >
+                <Text style={styles.scanButtonText}>
+                    Scan QR Code
+                </Text>
+            </Pressable>
+
         </View>
     );
 }
@@ -64,6 +105,22 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginBottom: 12,
     },
+
+    scanButton: {
+        borderWidth: 1,
+        borderColor: '#3F3F46',
+        paddingVertical: 16,
+        borderRadius: 14,
+        alignItems: 'center',
+        marginTop: 12,
+    },
+
+    scanButtonText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+
 
     subtitle: {
         color: '#A1A1AA',
@@ -104,6 +161,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginBottom: 16,
 
-    }
+    },
+
+    camera: {
+        flex: 1,
+    },
 
 });
