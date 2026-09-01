@@ -34,7 +34,13 @@ export default function JoinRoomScreen() {
     }
 
     function handleBarcodeScanned({ data }: { data: string }) {
-        console.log(data);
+        const scannedRoomCode = data.replace(
+            'pocketsurround://join/',
+            ''
+        );
+
+        setRoomCode(scannedRoomCode);
+        setIsScanning(false);
     }
 
     return isScanning ? (
